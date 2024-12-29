@@ -8,6 +8,7 @@
 import XCTest
 @testable import FetchTakeHome
 
+@MainActor
 final class RecipeViewModelTests: XCTestCase {
     enum RecipeTestURL: String {
         case prod = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json"

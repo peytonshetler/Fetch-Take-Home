@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct CachedAsyncImage: View {
-    @State private var uiImage: UIImage?
-    private var viewModel: CachedAsyncImageVM
+    @State private var viewModel: CachedAsyncImageVM
     
     init(item: ImageCacheable) {
         self.viewModel = CachedAsyncImageVM(item: item)
@@ -17,40 +16,54 @@ struct CachedAsyncImage: View {
 
     var body: some View {
         VStack {
-            if let uiImage {
-                Image(uiImage: uiImage)
+            if let image = viewModel.uiImage {
+                Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .frame(width: 90, height: 90)
+                    .clipShape(Circle())
             } else {
                 Image(systemName: "photo")
                     .resizable()
+                    .aspectRatio(contentMode: .fill)
                     .foregroundStyle(.white)
-                    .font(.system(size: 60))
+                    .padding(20)
                     .background(.gray)
+                    .clipShape(Circle())
+                    .frame(width: 90, height: 90)
             }
         }
         .task {
-            if let image = viewModel.fetchSavedImageFromDisk() {
-                uiImage = image
-            } else {
-                // If UIImage doesn't exist on disk, load Image from URL
-                let loadedImage: UIImage? = await viewModel.loadImageFromURL()
-                uiImage = loadedImage
-
-                // Save the loaded image to disk
-                viewModel.saveImageToDisk(image: loadedImage)
-            }
+            await viewModel.loadImage()
         }
     }
 }
 
+#Preview {
+    ContentView()
+}
 
-@Observable
+
+@Observable @MainActor
 class CachedAsyncImageVM {
+    var uiImage: UIImage? = nil
     var item: ImageCacheable
-    
+
     init(item: ImageCacheable) {
         self.item = item
+    }
+    
+    func loadImage() async {
+        if let image = fetchSavedImageFromDisk() {
+            uiImage = image
+        } else {
+            // If UIImage doesn't exist on disk, load Image from URL
+            let loadedImage: UIImage? = await loadImageFromURL()
+            uiImage = loadedImage
+
+            // Save the loaded image to disk
+            saveImageToDisk(image: loadedImage)
+        }
     }
     
     func fetchSavedImageFromDisk() -> UIImage? {

@@ -16,8 +16,6 @@ struct ContentView: View {
             List(viewModel.recipes, id: \.id) { recipe in
                 HStack {
                     CachedAsyncImage(item: recipe)
-                        .frame(width: 90, height: 90)
-                        .clipShape(Circle())
                     
                     Spacer()
                     VStack(alignment: .trailing, spacing: 20) {
@@ -70,7 +68,7 @@ struct ContentView: View {
 }
 
 
-@Observable
+@Observable @MainActor
 class RecipeViewModel {
     var recipes: [Recipe] = []
     var apiError: APIError? = nil

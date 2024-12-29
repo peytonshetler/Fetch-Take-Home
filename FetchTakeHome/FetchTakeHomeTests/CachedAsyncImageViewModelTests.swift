@@ -15,6 +15,7 @@ fileprivate struct  MockImageCacheableItem: ImageCacheable {
     var imageUrl: String? = "https://d3jbb8n5wk0qxi.cloudfront.net/photos/dd936646-8100-4a1c-b5ce-5f97adf30a42/small.jpg"
 }
 
+@MainActor
 final class CachedAsyncImageViewModelTests: XCTestCase {
     
     var viewModel: CachedAsyncImageVM?

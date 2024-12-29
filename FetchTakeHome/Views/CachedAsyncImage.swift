@@ -9,12 +9,10 @@ import SwiftUI
 
 struct CachedAsyncImage: View {
     @State private var uiImage: UIImage?
-
-    var item: ImageCacheable
+    private var viewModel: CachedAsyncImageVM
     
     init(item: ImageCacheable) {
-        self.uiImage = nil
-        self.item = item
+        self.viewModel = CachedAsyncImageVM(item: item)
     }
 
     var body: some View {
@@ -32,26 +30,33 @@ struct CachedAsyncImage: View {
             }
         }
         .task {
-            // NOTE: Checking for an existing file using "fileName" before we
-            // validate the presence of "urlString" because in a real-world maybe we
-            // saved that file in previous screen/transaction.
-            uiImage = fetchSavedImageFromDisk(fileName: item.fileName)
-
-            if let imageUrl = item.smallImageUrl, uiImage == nil {
+            if let image = viewModel.fetchSavedImageFromDisk() {
+                uiImage = image
+            } else {
                 // If UIImage doesn't exist on disk, load Image from URL
-                let loadedImage: UIImage? = await loadImageFromURL(urlString: imageUrl)
+                let loadedImage: UIImage? = await viewModel.loadImageFromURL()
                 uiImage = loadedImage
-                
-                // Save the image to disk
-                saveImageToDisk(image: loadedImage, fileName: item.fileName)
+
+                // Save the loaded image to disk
+                viewModel.saveImageToDisk(image: loadedImage)
             }
         }
     }
+}
+
+
+@Observable
+class CachedAsyncImageVM {
+    var item: ImageCacheable
     
-    private func fetchSavedImageFromDisk(fileName: String?) -> UIImage? {
-        guard let fileName, let url = getDocumentsDirectoryURL() else { return nil }
+    init(item: ImageCacheable) {
+        self.item = item
+    }
+    
+    func fetchSavedImageFromDisk() -> UIImage? {
+        guard let url = getDocumentsDirectoryURL() else { return nil }
         
-        let existingFileUrl = url.appendingPathComponent(fileName)
+        let existingFileUrl = url.appendingPathComponent(item.fileName)
         // Attempt to load image from disk
         if FileManager.default.fileExists(atPath: existingFileUrl.path) {
             if let imageData = try? Data(contentsOf: existingFileUrl),
@@ -63,8 +68,8 @@ struct CachedAsyncImage: View {
         return nil
     }
     
-    private func loadImageFromURL(urlString: String?) async -> UIImage? {
-        guard let urlString, let url = URL(string: urlString) else { return nil }
+    func loadImageFromURL() async -> UIImage? {
+        guard let urlString = item.imageUrl, let url = URL(string: urlString) else { return nil }
 
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
@@ -75,19 +80,19 @@ struct CachedAsyncImage: View {
         }
     }
         
-    private func saveImageToDisk(image: UIImage?, fileName: String) {
+    func saveImageToDisk(image: UIImage?) {
         guard let image = image,
               let imageData = image.jpegData(compressionQuality: 0.9),
               let url = getDocumentsDirectoryURL() else {
             return
         }
         
-        let fileURL = url.appendingPathComponent(fileName)
+        let fileURL = url.appendingPathComponent(item.fileName)
         
         do {
             try imageData.write(to: fileURL)
         } catch {
-            print("Failed to save image to disk with error: \(error.localizedDescription)")
+            print("Failed to save image with name: \(item.fileName) to disk with error: \(error.localizedDescription)")
         }
     }
         
@@ -97,6 +102,3 @@ struct CachedAsyncImage: View {
     }
 }
 
-#Preview {
-    CachedAsyncImage()
-}

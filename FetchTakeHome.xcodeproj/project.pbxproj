@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		798B34EA2D20F0C0008842F8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 798B34E92D20F0C0008842F8 /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		794A32D62D159E3500F82912 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,22 +31,38 @@
 		794A32C42D159E3400F82912 /* FetchTakeHome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FetchTakeHome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		794A32D52D159E3500F82912 /* FetchTakeHomeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FetchTakeHomeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		794A32DF2D159E3500F82912 /* FetchTakeHomeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FetchTakeHomeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		798B34E92D20F0C0008842F8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		794A32F52D159E5F00F82912 /* Exceptions for "FetchTakeHome" folder in "FetchTakeHome" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FetchTakeHomeTests/CachedAsyncImageViewModelTests.swift,
+				FetchTakeHomeTests/RecipeModelTests.swift,
+				FetchTakeHomeTests/RecipeViewModelTests.swift,
+			);
+			target = 794A32C32D159E3400F82912 /* FetchTakeHome */;
+		};
+		794A32F62D159E5F00F82912 /* Exceptions for "FetchTakeHome" folder in "FetchTakeHomeTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FetchTakeHomeTests/CachedAsyncImageViewModelTests.swift,
+				FetchTakeHomeTests/RecipeModelTests.swift,
+				FetchTakeHomeTests/RecipeViewModelTests.swift,
+			);
+			target = 794A32D42D159E3500F82912 /* FetchTakeHomeTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		794A32C62D159E3400F82912 /* FetchTakeHome */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				794A32F52D159E5F00F82912 /* Exceptions for "FetchTakeHome" folder in "FetchTakeHome" target */,
+				794A32F62D159E5F00F82912 /* Exceptions for "FetchTakeHome" folder in "FetchTakeHomeTests" target */,
+			);
 			path = FetchTakeHome;
-			sourceTree = "<group>";
-		};
-		794A32D82D159E3500F82912 /* FetchTakeHomeTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = FetchTakeHomeTests;
-			sourceTree = "<group>";
-		};
-		794A32E22D159E3500F82912 /* FetchTakeHomeUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = FetchTakeHomeUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,9 +95,8 @@
 		794A32BB2D159E3400F82912 = {
 			isa = PBXGroup;
 			children = (
+				798B34E92D20F0C0008842F8 /* README.md */,
 				794A32C62D159E3400F82912 /* FetchTakeHome */,
-				794A32D82D159E3500F82912 /* FetchTakeHomeTests */,
-				794A32E22D159E3500F82912 /* FetchTakeHomeUITests */,
 				794A32C52D159E3400F82912 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -130,9 +149,6 @@
 			dependencies = (
 				794A32D72D159E3500F82912 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				794A32D82D159E3500F82912 /* FetchTakeHomeTests */,
-			);
 			name = FetchTakeHomeTests;
 			packageProductDependencies = (
 			);
@@ -152,9 +168,6 @@
 			);
 			dependencies = (
 				794A32E12D159E3500F82912 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				794A32E22D159E3500F82912 /* FetchTakeHomeUITests */,
 			);
 			name = FetchTakeHomeUITests;
 			packageProductDependencies = (
@@ -212,6 +225,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				798B34EA2D20F0C0008842F8 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,7 +420,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
@@ -445,7 +459,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.2;

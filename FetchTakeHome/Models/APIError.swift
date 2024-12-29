@@ -7,8 +7,7 @@
 
 import Foundation
 
-// We could keep creating custom types for different scenarios.
-// Ex: Encoding/Decoding errors (if we were encoding), Failed request errors, etc.
+// We could keep creating custom cases for all kinds of different errors
 enum APIError: Error {
     
     case badURL
@@ -28,21 +27,5 @@ enum APIError: Error {
     
     var title: String {
         return  "Something went wrong."
-    }
-}
-
-extension APIError: Equatable {
-    public static func ==(lhs: APIError, rhs: APIError) -> Bool {
-
-        switch (lhs,rhs) {
-        case (.badURL, .badURL):
-            return true
-        case (.invalidStatusCode(statusCode: let statusCodeA), .invalidStatusCode(statusCode: let statusCodeB)):
-            return statusCodeA == statusCodeB
-        case (.unknown, .unknown):
-            return true
-        default:
-            return false
-        }
     }
 }

@@ -7,12 +7,9 @@
 
 import Foundation
 
-
-
 protocol ImageCacheable {
     var fileName: String { get }
-    var largeImageUrl: String? { get }
-    var smallImageUrl: String? { get }
+    var imageUrl: String? { get }
 }
 
 struct RecipeResponse: Decodable {
@@ -23,7 +20,7 @@ enum RecipeVMNetworkState {
     case loading, completed
 }
 
-struct Recipe: Decodable, Identifiable, ImageCacheable {
+struct Recipe: Decodable, Identifiable {
     var id: String
     var cuisine: String
     var name: String
@@ -31,12 +28,6 @@ struct Recipe: Decodable, Identifiable, ImageCacheable {
     var smallImageUrl: String?
     var sourceUrl: String?
     var youtubeUrl: String?
-    
-    // This will be used if/when we save the Recipe's image data to disk.
-    var fileName: String {
-        let updatedName: String = name.replacingOccurrences(of: " ", with: "-")
-        return "\(updatedName)-\(id)"
-    }
     
     enum CodingKeys: String, CodingKey {
         case id = "uuid"
@@ -61,44 +52,15 @@ struct Recipe: Decodable, Identifiable, ImageCacheable {
     }
 }
 
-@Observable
-class RecipeViewModel {
-    var recipes: [Recipe] = []
-    var apiError: APIError? = nil
-    var state: RecipeVMNetworkState = .completed
-    var shouldShowAlert: Bool = false
-    
-    private func handleError(error: APIError) {
-        apiError = error
-        state = .completed
-        shouldShowAlert = true
+extension Recipe: ImageCacheable {
+    var fileName: String {
+        let updatedName: String = name.replacingOccurrences(of: " ", with: "-")
+        return "\(updatedName)-\(id)"
     }
-
-    func fetchRecipes() async {
-        state = .loading
-
-        do {
-            let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json")
-            guard let url = url else {
-                handleError(error: .badURL)
-                return
-            }
-
-            let (data, response) = try await URLSession.shared.data(from: url)
-            
-            if let response = response as? HTTPURLResponse {
-                let statusCode = response.statusCode
-                guard (200...299).contains(statusCode) else {
-                    handleError(error: .invalidStatusCode(statusCode: statusCode))
-                    return
-                }
-            }
-            let recipeResponse = try JSONDecoder().decode(RecipeResponse.self, from: data)
-            recipes = recipeResponse.recipes
-            
-            state = .completed
-        } catch {
-            handleError(error: .unknown)
-        }
+    
+    var imageUrl: String? {
+        return smallImageUrl
     }
 }
+
+
